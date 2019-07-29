@@ -12,6 +12,44 @@
 
 <!-- LB -->
 <div class='entry'>
+<h2 id='assign-filetype-with-application'>assign filetype with application</h2>
+<small>[<a href='#assign-filetype-with-application'>link</a>&mdash;<a href='blog/assign-filetype-with-application.html'>standalone</a>]</small>
+<p>for example to open textfiles using medit instead of gedit.
+this should work in all WM and DE.</p>
+
+<pre><code>
+# check the type of a file:
+$ xdg-mime query filetype ../Documents/blah.txt 
+text/plain; charset=utf-8
+
+# check what default app is currently set to open it:
+$ xdg-mime query default text/plain
+org.gnome.gedit.desktop
+
+# change default app to something else:
+$ xdg-mime default medit.desktop text/plain
+
+# open the file through it's newly set default app:
+$ xdg-open ../Documents/blah.txt
+
+# find list of apps that can open a given filetype:
+$ grep 'video/webm' /usr/share/applications/mimeinfo.cache
+video/webm=firefox.desktop;vlc.desktop;mpv.desktop;
+</code></pre>
+
+<p>below is the location of the system-wide config file for this.
+better create one in /home/user too:</p>
+
+<pre><code>
+$ ls /usr/share/applications/defaults.list
+$ touch ~/.local/share/applications/defaults.list
+</code></pre>
+
+source:
+<a href=http://www.spinics.net/linux/fedora/fedora-users/msg321467.html>spinics.net/linux</a>, <a href=https://bbs.archlinux.org/viewtopic.php?id=86635>bbs.archlinux.org</a>, <a href=https://unix.stackexchange.com/questions/114075/how-to-get-a-list-of-applications-associated-with-a-file-using-command-line>ustackexchange</a>
+<small><br><br>29 juil. 2019</small>
+</div><br>
+<div class='entry'>
 <h2 id='workaround-hibernate-bug-on-macbookpro'>workaround hibernate bug on macbookpro</h2>
 <small>[<a href='#workaround-hibernate-bug-on-macbookpro'>link</a>&mdash;<a href='blog/workaround-hibernate-bug-on-macbookpro.html'>standalone</a>]</small>
 <p>my macbookpro (12,1 early 2015) is waking up almost immediately after being put to sleep. these are workaround that problem. note that openning the lid won't wake it up anymore, the power button need to be pressed once to bring the computer back.</p>
