@@ -1,0 +1,41 @@
+<html>
+<head>
+<title>irssi conf and tweaks</title>
+<link rel='stylesheet' type='text/css' href='../style.css'>
+<meta charset='utf-8'/>
+</head>
+<body>
+<div class=title>irssi conf and tweaks</div><hr>
+<small>[<a href='../2019.html#irssi-conf-and-tweaks'>link</a>&mdash;<a href='irssi-conf-and-tweaks.html'>standalone</a>]</small>
+<p>how to highlight my own lines with a speciﬁc color,
+for better readability, diﬀerentiating my lines from
+other's at a glance. also, don't forget to /save the setting.
+the last part "%g" is for green. so all my lines will be green.</p>
+<pre><code>
+/format own_msg {ownmsgnick $2 {ownnick $0}}%g$1
+/save
+</code></pre>
+
+close unneeded server window.
+<pre><code>
+/set use_status_window oﬀ
+/wc
+# to reopen it you might have to turn it on
+# then create a new window and name it (status)
+# untested, idk.
+</code></pre>
+
+keep per-window command history.
+each window to have its own history
+<pre><code>
+/set window_history on
+</code></pre>
+
+ignore some activity from the channels
+<pre><code>
+/ignore -channels #channel * JOINS PARTS QUITS NICKS
+</code></pre>
+<!--<footer>by <strong><a href='nosite.yet/'>klaus</a></strong></footer>
+--></body>
+
+</html>

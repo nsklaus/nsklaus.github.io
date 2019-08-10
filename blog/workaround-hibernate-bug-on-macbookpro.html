@@ -1,0 +1,74 @@
+<html>
+<head>
+<title>workaround hibernate bug on macbookpro</title>
+<link rel='stylesheet' type='text/css' href='../style.css'>
+<meta charset='utf-8'/>
+</head>
+<body>
+<div class=title>workaround hibernate bug on macbookpro</div><hr>
+<small>[<a href='../2019.html#workaround-hibernate-bug-on-macbookpro'>link</a>&mdash;<a href='workaround-hibernate-bug-on-macbookpro.html'>standalone</a>]</small>
+<p>my macbookpro (12,1 early 2015) is waking up almost immediately after being put to sleep. these are workaround that problem. note that openning the lid won't wake it up anymore, the power button need to be pressed once to bring the computer back.</p>
+<pre><code>
+cat /proc/acpi/wakeup
+grep . /sys/bus/usb/devices/*/power/wakeup
+...
+rmmod btusb
+echo ARPT > /proc/acpi/wakeup
+echo XHC1 > /proc/acpi/wakeup
+echo disabled > /sys/bus/usb/devices/1-3/power/wakeup
+echo disabled > /sys/bus/usb/devices/1-5/power/wakeup
+</code></pre>
+
+<p>automate this on every suspend event:</p>
+
+<pre><code>
+vim /lib/systemd/system-sleep/pre-suspend.sh
+
+#!/bin/bash
+if [ "${1}" == "pre" ]; then
+  echo ARPT > /proc/acpi/wakeup
+  echo RP01 > /proc/acpi/wakeup
+  echo RP02 > /proc/acpi/wakeup
+  echo RP03 > /proc/acpi/wakeup
+  echo RP05 > /proc/acpi/wakeup
+  echo RP06 > /proc/acpi/wakeup
+  echo XHC1 > /proc/acpi/wakeup
+  echo disabled > /sys/bus/usb/devices/1-3/power/wakeup
+  echo disabled > /sys/bus/usb/devices/1-5/power/wakeup
+fi
+chmod +x  /lib/systemd/system-sleep/pre-suspend.sh
+</code></pre>
+
+<p>another, possibly better, approach, still doing the same thing but this time with systemd instead:</p>
+
+<pre><code>
+sudo vim /etc/systemd/system/suspend-fix.service
+
+[Unit]
+Description=Fix for the suspend issue
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c "\
+echo XHC1 > /proc/acpi/wakeup && \ 
+echo LID0 > /proc/acpi/wakeup && \ 
+echo ARPT > /proc/acpi/wakeup && \ 
+echo RP01 > /proc/acpi/wakeup && \ 
+echo RP02 > /proc/acpi/wakeup && \ 
+echo RP02 > /proc/acpi/wakeup && \ 
+echo RP03 > /proc/acpi/wakeup && \ 
+echo RP05 > /proc/acpi/wakeup && \ 
+echo RP06 > /proc/acpi/wakeup && \ 
+echo disabled > /sys/bus/usb/devices/1-3/power/wakeup && \ 
+echo disabled > /sys/bus/usb/devices/1-5/power/wakeup"
+[Install]
+WantedBy=multi-user.target
+
+systemctl enable suspend-fix.service
+systemctl start suspend-fix.service
+</code></pre>
+
+source: <a href="https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1507472">bugs.launchpad.net</a>, <a href="https://askubuntu.com/questions/895849/macbook-screen-turns-back-on-after-suspend/898579#898579">askubuntu.com</a>, <a href=https://www.addictivetips.com/ubuntu-linux-tips/run-scripts-and-commands-on-suspend-and-resume-on-linux/>addictivetips.com</a>, <a href=https://askubuntu.com/questions/148481/how-do-i-prevent-immediate-wake-up-from-suspend-and-or-hibernation>askubuntu2</a>, <a href=https://wiki.archlinux.org/index.php/Mac#Wake_Up_After_Suspend>wiki.archlinux.org</a>
+<!--<footer>by <strong><a href='nosite.yet/'>klaus</a></strong></footer>
+--></body>
+
+</html>

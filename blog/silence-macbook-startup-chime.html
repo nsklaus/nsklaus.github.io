@@ -1,0 +1,59 @@
+<html>
+<head>
+<title>silence macbook startup chime</title>
+<link rel='stylesheet' type='text/css' href='../style.css'>
+<meta charset='utf-8'/>
+</head>
+<body>
+<div class=title>silence macbook startup chime</div><hr>
+<small>[<a href='../2019.html#silence-macbook-startup-chime'>link</a>&mdash;<a href='silence-macbook-startup-chime.html'>standalone</a>]</small>
+<p>there's two files to modify,<p>
+
+<pre><code>
+cd /sys/firmware/efi/efivars/
+$ ll *System*
+-rw-r--r-- 1 root root 5 sept. 18 10:08 SystemAudioVolume-7c436110-ab2a-4bbb-a880-fe41995c9f82
+-rw-r--r-- 1 root root 5 sept. 18 10:08 SystemAudioVolumeDB-7c436110-ab2a-4bbb-a880-fe41995c9f82
+</code></pre>
+
+<p>first, list current values:</p>
+<pre><code>
+$ efivar -n 7c436110-ab2a-4bbb-a880-fe41995c9f82-SystemAudioVolume -p
+GUID: 7c436110-ab2a-4bbb-a880-fe41995c9f82
+Name: "SystemAudioVolume"
+Attributes:
+   Non-Volatile
+   Boot Service Access
+   Runtime Service Access
+Value:
+00000000  54
+                                               |T               | 
+$ efivar -n 7c436110-ab2a-4bbb-a880-fe41995c9f82-SystemAudioVolumeDB -p
+GUID: 7c436110-ab2a-4bbb-a880-fe41995c9f82
+Name: "SystemAudioVolumeDB"
+Attributes:
+   Non-Volatile
+   Boot Service Access
+   Runtime Service Access
+Value:
+00000000  eb          
+</code></pre>
+
+<p>modify the values:</p>
+
+<pre><code>
+chattr -i /sys/firmware/efi/efivars/SystemAudioVolumeDB-7c436110-ab2a-4bbb-a880-fe41995c9f82  
+chattr -i /sys/firmware/efi/efivars/SystemAudioVolume-7c436110-ab2a-4bbb-a880-fe41995c9f82 
+
+printf "\x07\x00\x00\x00\x00" > /sys/firmware/efi/efivars/SystemAudioVolumeDB-7c436110-ab2a-4bbb-a880-fe41995c9f82 
+printf "\x07\x00\x00\x00\x00" > /sys/firmware/efi/efivars/SystemAudioVolume-7c436110-ab2a-4bbb-a880-fe41995c9f82
+
+chattr +i /sys/firmware/efi/efivars/SystemAudioVolumeDB-7c436110-ab2a-4bbb-a880-fe41995c9f82 
+chattr +i /sys/firmware/efi/efivars/SystemAudioVolume-7c436110-ab2a-4bbb-a880-fe41995c9f82 
+</code></pre>
+
+source: <a href=http://atodorov.org/blog/2015/04/27/disabling-macbook-startup-sound-in-linux/>atodorov.org</a>, <a href=http://kernelnewbies.kernelnewbies.narkive.com/lDURrp3X/modify-efivars-permisson-denied>kernelnewbies.org</a>
+<!--<footer>by <strong><a href='nosite.yet/'>klaus</a></strong></footer>
+--></body>
+
+</html>

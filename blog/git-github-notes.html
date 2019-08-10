@@ -1,0 +1,87 @@
+<html>
+<head>
+<title>git & github notes</title>
+<link rel='stylesheet' type='text/css' href='../style.css'>
+<meta charset='utf-8'/>
+</head>
+<body>
+<div class=title>git & github notes</div><hr>
+<small>[<a href='../2019.html#git-github-notes'>link</a>&mdash;<a href='git-github-notes.html'>standalone</a>]</small>
+<p>discard all local changes, sync with repo</p>
+
+<pre><code>
+git fetch origin
+git reset --hard origin/master
+# optional, will wipe local ﬁles that do not exist on master
+# git clean -f -d
+</code></pre>
+
+<p>Keeping a fork up to date locally:</p>
+
+<pre><code>
+# 1. Clone your fork:
+git clone git@github.com:YOUR-USERNAME/YOUR-FORKED-REPO.git
+
+# 2. Add remote from upstream:
+git remote add upstream git://github.com/DEV-NAME/ORIGNAL-REPO.git
+
+# fetch upstream data into the local fork
+git fetch upstream
+
+# 3. apply upstream changes to your local fork:
+git pull upstream master
+
+# list repo remote settings
+git remote -v
+origin https://github.com/nsklaus/Cataclysm-DDA.git (fetch)
+origin https://github.com/nsklaus/Cataclysm-DDA.git (push)
+upstream https://github.com/CleverRaven/Cataclysm-DDA.git (fetch)
+upstream https://github.com/CleverRaven/Cataclysm-DDA.git (push)
+
+# push your changes as usual
+git push origin master
+</code></pre>
+
+<p>messed up everything? revert to a last know revision:
+(git-checkout-a-commit-and-attach-to-existing-branch)</p>
+
+<pre><code>
+# fetch data
+git fetch origin
+
+# merge from <sha1 of commit you want to merge>
+git merge b2ac2fc49179249e5538bf9ee9b0178ca21162fa
+
+# then work as usual, add, commit and force push
+git push --force origin look_around_area_name
+</code></pre>
+
+<p>rollback to a speciﬁc commit. Don't forget the "." at the end, very important. This will apply changes to the whole tree. You should execute this command in the git project root. If you are in any sub directory, then this command only changes the ﬁles in the current directory. Then commit and you should be good.</p>
+
+<pre><code>
+git checkout [revision] .
+# where [revision] is the commit hash (for example: 12345678901234567890123456789012345678ab).
+</code></pre>
+
+<p>if local repo got fat, weighting more than it should it is possible to analyse and clean it. first here's to list repo size:</p>
+
+<pre><code>
+git rev-list --objects --all \
+| git cat-file --batch-check='%(objecttype) %(objectname) %(objectsize) %(rest)' \
+| sed -n 's/^blob //p' \
+| sort --numeric-sort --key=2 \
+| cut -c 1-12,41- \
+| $(command -v gnumfmt || echo numfmt) --field=2 --to=iec-i --suffix=B --padding=7 --round=nearest
+</code></pre>
+
+<p>now clean it. on my repo dotfiles i made a mistake and it was 500mb, after the command below it was around 500kb.</p>
+
+<pre><code>
+git gc --prune=now --aggressive
+</code></pre>
+
+source: <a href=http://stackoverﬂow.com/questions/6373277/git-sync-local-repo-with-remote-one>stackoverﬂow1</a>, <a href=https://gist.github.com/CristinaSolana/1885435>CristinaSolana</a>, <a href=https://stackoverﬂow.com/questions/18204240/git-checkout-a-commit-and-attach-to-existing-branch>stackoverﬂow2</a>, <a href=https://stackoverﬂow.com/questions/2007662/rollback-to-an-old-git-commit-in-a-public-repo> stackoverﬂow3</a>,  <a href=https://stackoverflow.com/questions/10622179/how-to-find-identify-large-commits-in-git-history>stackoverflow4</a>, <a href=https://stackoverflow.com/questions/2100907/how-to-remove-delete-a-large-file-from-commit-history-in-git-repository>stackoverflow5</a>
+<!--<footer>by <strong><a href='nosite.yet/'>klaus</a></strong></footer>
+--></body>
+
+</html>

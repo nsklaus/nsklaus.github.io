@@ -1,0 +1,45 @@
+<html>
+<head>
+<title>virtual functions in cpp</title>
+<link rel='stylesheet' type='text/css' href='../style.css'>
+<meta charset='utf-8'/>
+</head>
+<body>
+<div class=title>virtual functions in cpp</div><hr>
+<small>[<a href='../2019.html#virtual-functions-in-cpp'>link</a>&mdash;<a href='../blogindex.html'>index</a>]</small>
+<p>Virtual Functions are used to support Runtime Polymorphism.
+That is, virtual keyword tells the compiler not to make the decision (of function binding) at compile time, 
+rather postpone it for runtime".</p>
+
+<p>You can make a function virtual by preceding the keyword virtual in its base class declaration. 
+For example,</p>
+
+<pre><code>
+class Base
+{
+   virtual void func();
+}
+</code></pre>
+
+<p>When a Base Class has a virtual member function, any class that inherits from the 
+Base Class can redefine the function with exactly the same prototype 
+i.e. only functionality can be redefined, not the interface of the function.</p>
+
+<pre><code>
+class Derive : public Base
+{
+   void func();
+}
+</code></pre>
+
+<p>A Base class pointer can be used to point to Base class object as well as a Derived class object.
+When the virtual function is called by using a Base class pointer, 
+the compiler decides at run-time which version of the function - 
+i.e. the Base class version or the overridden Derived class version - is to be called. 
+This is called Runtime Polymorphism.</p>
+
+<p>source: <a href=https://stackoverflow.com/questions/2391679/why-do-we-need-virtual-functions-in-c>kin on stackoverflow</a></p>
+<!--<footer>by <strong><a href='nosite.yet/'>klaus</a></strong></footer>
+--></body>
+
+</html>

@@ -1,18 +1,27 @@
 <html>
 <head>
+<style>
+html, body{
+   overflow:hidden;
+   height: 100%;
+   min-height: 100%;
+}
+#my-object {
+    height : 100%;
+    width : 100%;
+    overflow : hidden;
+}
+</style>
 </head>
 <body>
 bleh 123
-<!--<iframe src="2019.html" seamless></iframe>-->
-<object name="foo" type="text/html" data="2019.html">
-some stuff
-</object>
 
 
-...text before...
-<OBJECT data="2019.html">
+<h2>...text before...</h2>
+<OBJECT id="my-object" data="2019.html">
 Warning: file_to_include.html could not be included.
 </OBJECT>
-...text after...
+<br>
+<h2>...text after...</h2>
 </body>
 </html>
