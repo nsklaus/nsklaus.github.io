@@ -12,6 +12,45 @@
 <!-- LB -->
 
 <item>
+<title>irssi conf and tweaks</title>
+<guid>nosite.yet/2019.html#irssi-conf-and-tweaks</guid>
+<pubDate>Wed, 31 Jul 2019 07:14:53 +0200</pubDate>
+<description><![CDATA[
+<p>how to highlight my own lines with a speciﬁc color,
+for better readability, diﬀerentiating my lines from
+other's at a glance. also, don't forget to /save the setting.
+the last part "%g" is for green. so all my lines will be green.</p>
+<pre><code>
+/format own_msg {ownmsgnick $2 {ownnick $0}}%g$1
+/save
+</code></pre>
+
+close unneeded server window.
+<pre><code>
+/set use_status_window oﬀ
+/wc
+# to reopen it you might have to turn it on
+# then create a new window and name it (status)
+# untested, idk.
+</code></pre>
+
+keep per-window command history.
+each window to have its own history
+<pre><code>
+/set window_history on
+</code></pre>
+
+ignore some activity from the channels
+<pre><code>
+/ignore -channels #channel * JOINS PARTS QUITS NICKS
+</code></pre>
+]]></description>
+</item>
+
+
+
+
+<item>
 <title>git & github notes</title>
 <guid>nosite.yet/2019.html#git-github-notes</guid>
 <pubDate>Sat, 10 Aug 2019 03:06:25 +0200</pubDate>
@@ -94,45 +133,100 @@ source: <a href=http://stackoverﬂow.com/questions/6373277/git-sync-local-repo-
 </item>
 
 
-
-
 <item>
-<title>irssi conf and tweaks</title>
-<guid>nosite.yet/2019.html#irssi-conf-and-tweaks</guid>
-<pubDate>Wed, 31 Jul 2019 07:14:53 +0200</pubDate>
+<title>silence macbook startup chime</title>
+<guid>nosite.yet/2019.html#silence-macbook-startup-chime</guid>
+<pubDate>Mon, 29 Jul 2019 06:32:17 +0200</pubDate>
 <description><![CDATA[
-<p>how to highlight my own lines with a speciﬁc color,
-for better readability, diﬀerentiating my lines from
-other's at a glance. also, don't forget to /save the setting.
-the last part "%g" is for green. so all my lines will be green.</p>
+<p>there's two files to modify,<p>
+
 <pre><code>
-/format own_msg {ownmsgnick $2 {ownnick $0}}%g$1
-/save
+cd /sys/firmware/efi/efivars/
+$ ll *System*
+-rw-r--r-- 1 root root 5 sept. 18 10:08 SystemAudioVolume-7c436110-ab2a-4bbb-a880-fe41995c9f82
+-rw-r--r-- 1 root root 5 sept. 18 10:08 SystemAudioVolumeDB-7c436110-ab2a-4bbb-a880-fe41995c9f82
 </code></pre>
 
-close unneeded server window.
+<p>first, list current values:</p>
 <pre><code>
-/set use_status_window oﬀ
-/wc
-# to reopen it you might have to turn it on
-# then create a new window and name it (status)
-# untested, idk.
+$ efivar -n 7c436110-ab2a-4bbb-a880-fe41995c9f82-SystemAudioVolume -p
+GUID: 7c436110-ab2a-4bbb-a880-fe41995c9f82
+Name: "SystemAudioVolume"
+Attributes:
+   Non-Volatile
+   Boot Service Access
+   Runtime Service Access
+Value:
+00000000  54
+                                               |T               |
+$ efivar -n 7c436110-ab2a-4bbb-a880-fe41995c9f82-SystemAudioVolumeDB -p
+GUID: 7c436110-ab2a-4bbb-a880-fe41995c9f82
+Name: "SystemAudioVolumeDB"
+Attributes:
+   Non-Volatile
+   Boot Service Access
+   Runtime Service Access
+Value:
+00000000  eb
 </code></pre>
 
-keep per-window command history.
-each window to have its own history
+<p>modify the values:</p>
+
 <pre><code>
-/set window_history on
+chattr -i /sys/firmware/efi/efivars/SystemAudioVolumeDB-7c436110-ab2a-4bbb-a880-fe41995c9f82
+chattr -i /sys/firmware/efi/efivars/SystemAudioVolume-7c436110-ab2a-4bbb-a880-fe41995c9f82
+
+printf "\x07\x00\x00\x00\x00" > /sys/firmware/efi/efivars/SystemAudioVolumeDB-7c436110-ab2a-4bbb-a880-fe41995c9f82
+printf "\x07\x00\x00\x00\x00" > /sys/firmware/efi/efivars/SystemAudioVolume-7c436110-ab2a-4bbb-a880-fe41995c9f82
+
+chattr +i /sys/firmware/efi/efivars/SystemAudioVolumeDB-7c436110-ab2a-4bbb-a880-fe41995c9f82
+chattr +i /sys/firmware/efi/efivars/SystemAudioVolume-7c436110-ab2a-4bbb-a880-fe41995c9f82
 </code></pre>
 
-ignore some activity from the channels
-<pre><code>
-/ignore -channels #channel * JOINS PARTS QUITS NICKS
-</code></pre>
+source: <a href=http://atodorov.org/blog/2015/04/27/disabling-macbook-startup-sound-in-linux/>atodorov.org</a>, <a href=http://kernelnewbies.kernelnewbies.narkive.com/lDURrp3X/modify-efivars-permisson-denied>kernelnewbies.org</a>
 ]]></description>
 </item>
 
 
+<item>
+<title>virtual functions in cpp</title>
+<guid>nosite.yet/2019.html#virtual-functions-in-cpp</guid>
+<pubDate>Mon, 29 Jul 2019 04:22:27 +0200</pubDate>
+<description><![CDATA[
+<p>Virtual Functions are used to support Runtime Polymorphism.
+That is, virtual keyword tells the compiler not to make the decision (of function binding) at compile time,
+rather postpone it for runtime".</p>
+
+<p>You can make a function virtual by preceding the keyword virtual in its base class declaration.
+For example,</p>
+
+<pre><code>
+class Base
+{
+   virtual void func();
+}
+</code></pre>
+
+<p>When a Base Class has a virtual member function, any class that inherits from the
+Base Class can redefine the function with exactly the same prototype
+i.e. only functionality can be redefined, not the interface of the function.</p>
+
+<pre><code>
+class Derive : public Base
+{
+   void func();
+}
+</code></pre>
+
+<p>A Base class pointer can be used to point to Base class object as well as a Derived class object.
+When the virtual function is called by using a Base class pointer,
+the compiler decides at run-time which version of the function -
+i.e. the Base class version or the overridden Derived class version - is to be called.
+This is called Runtime Polymorphism.</p>
+
+<p>source: <a href=https://stackoverflow.com/questions/2391679/why-do-we-need-virtual-functions-in-c>kin on stackoverflow</a></p>
+]]></description>
+</item>
 
 
 <item>
@@ -182,16 +276,16 @@ Description=Fix for the suspend issue
 [Service]
 Type=oneshot
 ExecStart=/bin/sh -c "\
-echo XHC1 > /proc/acpi/wakeup && \ 
-echo LID0 > /proc/acpi/wakeup && \ 
-echo ARPT > /proc/acpi/wakeup && \ 
-echo RP01 > /proc/acpi/wakeup && \ 
-echo RP02 > /proc/acpi/wakeup && \ 
-echo RP02 > /proc/acpi/wakeup && \ 
-echo RP03 > /proc/acpi/wakeup && \ 
-echo RP05 > /proc/acpi/wakeup && \ 
-echo RP06 > /proc/acpi/wakeup && \ 
-echo disabled > /sys/bus/usb/devices/1-3/power/wakeup && \ 
+echo XHC1 > /proc/acpi/wakeup && \
+echo LID0 > /proc/acpi/wakeup && \
+echo ARPT > /proc/acpi/wakeup && \
+echo RP01 > /proc/acpi/wakeup && \
+echo RP02 > /proc/acpi/wakeup && \
+echo RP02 > /proc/acpi/wakeup && \
+echo RP03 > /proc/acpi/wakeup && \
+echo RP05 > /proc/acpi/wakeup && \
+echo RP06 > /proc/acpi/wakeup && \
+echo disabled > /sys/bus/usb/devices/1-3/power/wakeup && \
 echo disabled > /sys/bus/usb/devices/1-5/power/wakeup"
 [Install]
 WantedBy=multi-user.target
@@ -205,12 +299,6 @@ source: <a href="https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1507472">b
 </item>
 
 
-
-
-
-
-
-
 <item>
 <title>assign filetype with application</title>
 <guid>nosite.yet/2019.html#assign-filetype-with-application</guid>
@@ -221,7 +309,7 @@ this should work in all WM and DE.</p>
 
 <pre><code>
 # check the type of a file:
-$ xdg-mime query filetype ../Documents/blah.txt 
+$ xdg-mime query filetype ../Documents/blah.txt
 text/plain; charset=utf-8
 
 # check what default app is currently set to open it:
@@ -253,25 +341,21 @@ source:
 </item>
 
 
-
-
-
-
 <item>
 <title>extented attributes for files</title>
 <guid>nosite.yet/2019.html#extented-attributes-for-files</guid>
 <pubDate>Mon, 29 Jul 2019 06:01:40 +0200</pubDate>
 <description><![CDATA[
-<p>AmigaOS already did this in 1995. linux is a bit late to the party, 
-but better late than never. using 'xattr' command, 
-one may create arbitrary comments on files, 
+<p>AmigaOS already did this in 1995. linux is a bit late to the party,
+but better late than never. using 'xattr' command,
+one may create arbitrary comments on files,
 make tags or show where a file was downloaded from.
-dolphin file manager on kde can display and modify some of these extra infos and 
+dolphin file manager on kde can display and modify some of these extra infos and
 chromium automatically set the "user.xdg.origin.url" attribute upon downloading a file.</p>
 
 <pre><code>
 # list all attributes on a given file
-xattr -l python-3-reference-en.pdf 
+xattr -l python-3-reference-en.pdf
 user.xdg.comment: here's some comment on this file
 user.xdg.origin.url: http://www.bleh.com
 
@@ -279,7 +363,7 @@ user.xdg.origin.url: http://www.bleh.com
 attr -w user.xdg.origin.url http://www.bleh.com ./python-3-reference-en.pdf
 
 # delete an attribute
-xattr -d user.xdg.origin.url python-3-reference-en.pdf 
+xattr -d user.xdg.origin.url python-3-reference-en.pdf
 
 # copying files with extended attributes
 cp -a something somewhere/..
@@ -290,59 +374,6 @@ source: <a href=https://www.freedesktop.org/wiki/CommonExtendedAttributes/>freed
 </item>
 
 
-<item>
-<title>silence macbook startup chime</title>
-<guid>nosite.yet/2019.html#silence-macbook-startup-chime</guid>
-<pubDate>Mon, 29 Jul 2019 06:32:17 +0200</pubDate>
-<description><![CDATA[
-<p>there's two files to modify,<p>
-
-<pre><code>
-cd /sys/firmware/efi/efivars/
-$ ll *System*
--rw-r--r-- 1 root root 5 sept. 18 10:08 SystemAudioVolume-7c436110-ab2a-4bbb-a880-fe41995c9f82
--rw-r--r-- 1 root root 5 sept. 18 10:08 SystemAudioVolumeDB-7c436110-ab2a-4bbb-a880-fe41995c9f82
-</code></pre>
-
-<p>first, list current values:</p>
-<pre><code>
-$ efivar -n 7c436110-ab2a-4bbb-a880-fe41995c9f82-SystemAudioVolume -p
-GUID: 7c436110-ab2a-4bbb-a880-fe41995c9f82
-Name: "SystemAudioVolume"
-Attributes:
-   Non-Volatile
-   Boot Service Access
-   Runtime Service Access
-Value:
-00000000  54
-                                               |T               | 
-$ efivar -n 7c436110-ab2a-4bbb-a880-fe41995c9f82-SystemAudioVolumeDB -p
-GUID: 7c436110-ab2a-4bbb-a880-fe41995c9f82
-Name: "SystemAudioVolumeDB"
-Attributes:
-   Non-Volatile
-   Boot Service Access
-   Runtime Service Access
-Value:
-00000000  eb          
-</code></pre>
-
-<p>modify the values:</p>
-
-<pre><code>
-chattr -i /sys/firmware/efi/efivars/SystemAudioVolumeDB-7c436110-ab2a-4bbb-a880-fe41995c9f82  
-chattr -i /sys/firmware/efi/efivars/SystemAudioVolume-7c436110-ab2a-4bbb-a880-fe41995c9f82 
-
-printf "\x07\x00\x00\x00\x00" > /sys/firmware/efi/efivars/SystemAudioVolumeDB-7c436110-ab2a-4bbb-a880-fe41995c9f82 
-printf "\x07\x00\x00\x00\x00" > /sys/firmware/efi/efivars/SystemAudioVolume-7c436110-ab2a-4bbb-a880-fe41995c9f82
-
-chattr +i /sys/firmware/efi/efivars/SystemAudioVolumeDB-7c436110-ab2a-4bbb-a880-fe41995c9f82 
-chattr +i /sys/firmware/efi/efivars/SystemAudioVolume-7c436110-ab2a-4bbb-a880-fe41995c9f82 
-</code></pre>
-
-source: <a href=http://atodorov.org/blog/2015/04/27/disabling-macbook-startup-sound-in-linux/>atodorov.org</a>, <a href=http://kernelnewbies.kernelnewbies.narkive.com/lDURrp3X/modify-efivars-permisson-denied>kernelnewbies.org</a>
-]]></description>
-</item>
 
 
 
@@ -357,45 +388,32 @@ source: <a href=http://atodorov.org/blog/2015/04/27/disabling-macbook-startup-so
 
 
 
-<item>
-<title>virtual functions in cpp</title>
-<guid>nosite.yet/2019.html#virtual-functions-in-cpp</guid>
-<pubDate>Mon, 29 Jul 2019 04:22:27 +0200</pubDate>
-<description><![CDATA[
-<p>Virtual Functions are used to support Runtime Polymorphism.
-That is, virtual keyword tells the compiler not to make the decision (of function binding) at compile time, 
-rather postpone it for runtime".</p>
 
-<p>You can make a function virtual by preceding the keyword virtual in its base class declaration. 
-For example,</p>
 
-<pre><code>
-class Base
-{
-   virtual void func();
-}
-</code></pre>
 
-<p>When a Base Class has a virtual member function, any class that inherits from the 
-Base Class can redefine the function with exactly the same prototype 
-i.e. only functionality can be redefined, not the interface of the function.</p>
 
-<pre><code>
-class Derive : public Base
-{
-   void func();
-}
-</code></pre>
 
-<p>A Base class pointer can be used to point to Base class object as well as a Derived class object.
-When the virtual function is called by using a Base class pointer, 
-the compiler decides at run-time which version of the function - 
-i.e. the Base class version or the overridden Derived class version - is to be called. 
-This is called Runtime Polymorphism.</p>
 
-<p>source: <a href=https://stackoverflow.com/questions/2391679/why-do-we-need-virtual-functions-in-c>kin on stackoverflow</a></p>
-]]></description>
-</item>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -7,16 +7,16 @@
 <body>
 <div class=title>extented attributes for files</div><hr>
 <small>[<a href='../2019.html#extented-attributes-for-files'>link</a>&mdash;<a href='extented-attributes-for-files.html'>standalone</a>]</small>
-<p>AmigaOS already did this in 1995. linux is a bit late to the party, 
-but better late than never. using 'xattr' command, 
-one may create arbitrary comments on files, 
+<p>AmigaOS already did this in 1995. linux is a bit late to the party,
+but better late than never. using 'xattr' command,
+one may create arbitrary comments on files,
 make tags or show where a file was downloaded from.
-dolphin file manager on kde can display and modify some of these extra infos and 
+dolphin file manager on kde can display and modify some of these extra infos and
 chromium automatically set the "user.xdg.origin.url" attribute upon downloading a file.</p>
 
 <pre><code>
 # list all attributes on a given file
-xattr -l python-3-reference-en.pdf 
+xattr -l python-3-reference-en.pdf
 user.xdg.comment: here's some comment on this file
 user.xdg.origin.url: http://www.bleh.com
 
@@ -24,7 +24,7 @@ user.xdg.origin.url: http://www.bleh.com
 attr -w user.xdg.origin.url http://www.bleh.com ./python-3-reference-en.pdf
 
 # delete an attribute
-xattr -d user.xdg.origin.url python-3-reference-en.pdf 
+xattr -d user.xdg.origin.url python-3-reference-en.pdf
 
 # copying files with extended attributes
 cp -a something somewhere/..

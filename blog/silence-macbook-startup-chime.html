@@ -27,7 +27,7 @@ Attributes:
    Runtime Service Access
 Value:
 00000000  54
-                                               |T               | 
+                                               |T               |
 $ efivar -n 7c436110-ab2a-4bbb-a880-fe41995c9f82-SystemAudioVolumeDB -p
 GUID: 7c436110-ab2a-4bbb-a880-fe41995c9f82
 Name: "SystemAudioVolumeDB"
@@ -36,20 +36,20 @@ Attributes:
    Boot Service Access
    Runtime Service Access
 Value:
-00000000  eb          
+00000000  eb
 </code></pre>
 
 <p>modify the values:</p>
 
 <pre><code>
-chattr -i /sys/firmware/efi/efivars/SystemAudioVolumeDB-7c436110-ab2a-4bbb-a880-fe41995c9f82  
-chattr -i /sys/firmware/efi/efivars/SystemAudioVolume-7c436110-ab2a-4bbb-a880-fe41995c9f82 
+chattr -i /sys/firmware/efi/efivars/SystemAudioVolumeDB-7c436110-ab2a-4bbb-a880-fe41995c9f82
+chattr -i /sys/firmware/efi/efivars/SystemAudioVolume-7c436110-ab2a-4bbb-a880-fe41995c9f82
 
-printf "\x07\x00\x00\x00\x00" > /sys/firmware/efi/efivars/SystemAudioVolumeDB-7c436110-ab2a-4bbb-a880-fe41995c9f82 
+printf "\x07\x00\x00\x00\x00" > /sys/firmware/efi/efivars/SystemAudioVolumeDB-7c436110-ab2a-4bbb-a880-fe41995c9f82
 printf "\x07\x00\x00\x00\x00" > /sys/firmware/efi/efivars/SystemAudioVolume-7c436110-ab2a-4bbb-a880-fe41995c9f82
 
-chattr +i /sys/firmware/efi/efivars/SystemAudioVolumeDB-7c436110-ab2a-4bbb-a880-fe41995c9f82 
-chattr +i /sys/firmware/efi/efivars/SystemAudioVolume-7c436110-ab2a-4bbb-a880-fe41995c9f82 
+chattr +i /sys/firmware/efi/efivars/SystemAudioVolumeDB-7c436110-ab2a-4bbb-a880-fe41995c9f82
+chattr +i /sys/firmware/efi/efivars/SystemAudioVolume-7c436110-ab2a-4bbb-a880-fe41995c9f82
 </code></pre>
 
 source: <a href=http://atodorov.org/blog/2015/04/27/disabling-macbook-startup-sound-in-linux/>atodorov.org</a>, <a href=http://kernelnewbies.kernelnewbies.narkive.com/lDURrp3X/modify-efivars-permisson-denied>kernelnewbies.org</a>
