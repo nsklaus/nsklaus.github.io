@@ -13,6 +13,25 @@
 
 <!-- LB -->
 <div class='entry'>
+<h2 id='make-grub-font-bigger'>make grub font bigger</h2>
+<small>[<a href='#make-grub-font-bigger'>link</a>&mdash;<a href='blog/make-grub-font-bigger.html'>standalone</a>]</small>
+<p>apparently i can't change grub resolution on this laptop. in grub console i tried videoinfo and it reported only one available res to me: 2560x1600. that make the font really small. fortuately i've just discovered the font can be changed in grub too. i should have thought about this earlier, it's the same workaround as with KMS always picking up the largest possible resolution for tty: make the font bigger.</p>
+
+<pre><code>
+# in term:
+sudo grub-mkfont -s 32 -o /boot/grub/fonts/DejaVuSansMono.pf2 /usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf
+
+# edit /etc/default/grub
+GRUB_FONT=/boot/grub2/DejaVuSansMono.pf2
+
+# apply the changes
+sudo update-grub
+</code></pre>
+
+source: <a href=https://unix.stackexchange.com/questions/31672/can-grub-font-size-be-customised>stackexchange</a>
+<small><br><br>16 Aug 2019</small>
+</div><br><br>
+<div class='entry'>
 <h2 id='irssi-conf-and-tweaks'>irssi conf and tweaks</h2>
 <small>[<a href='#irssi-conf-and-tweaks'>link</a>&mdash;<a href='blog/irssi-conf-and-tweaks.html'>standalone</a>]</small>
 <p>how to highlight my own lines with a speciﬁc color,

@@ -1,0 +1,27 @@
+<html>
+<head>
+<title>make grub font bigger</title>
+<link rel='stylesheet' type='text/css' href='../style.css'>
+<meta charset='utf-8'/>
+</head>
+<body>
+<div class=title>make grub font bigger</div><hr>
+<small>[<a href='../2019.html#make-grub-font-bigger'>link</a>&mdash;<a href='make-grub-font-bigger.html'>standalone</a>]</small>
+<p>apparently i can't change grub resolution on this laptop. in grub console i tried videoinfo and it reported only one available res to me: 2560x1600. that make the font really small. fortuately i've just discovered the font can be changed in grub too. i should have thought about this earlier, it's the same workaround as with KMS always picking up the largest possible resolution for tty: make the font bigger.</p>
+
+<pre><code>
+# in term:
+sudo grub-mkfont -s 32 -o /boot/grub/fonts/DejaVuSansMono.pf2 /usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf
+
+# edit /etc/default/grub
+GRUB_FONT=/boot/grub2/DejaVuSansMono.pf2
+
+# apply the changes
+sudo update-grub
+</code></pre>
+
+source: <a href=https://unix.stackexchange.com/questions/31672/can-grub-font-size-be-customised>stackexchange</a>
+<!--<footer>by <strong><a href='nosite.yet/'>klaus</a></strong></footer>
+--></body>
+
+</html>

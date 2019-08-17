@@ -29,7 +29,7 @@
 li img{
     height: 1.25em;
 }
-h1 img{ 
+h1 img{
     height: 1em;
 }
 
@@ -57,6 +57,7 @@ a {
 
 a:hover {
     color: var(--linkalt);
+	COLOR:#b3810c;
 }
 
 body {
@@ -248,7 +249,7 @@ pre {
 
  h1 {
     color: #4b70b3;
-    font-weight:normal; 
+    font-weight:normal;
     display:inline-block;
 }
 
