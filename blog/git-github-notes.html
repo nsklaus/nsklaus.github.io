@@ -6,7 +6,7 @@
 </head>
 <body>
 <div class=title>git & github notes</div><hr>
-<small>[<a href='../2019.html#git-github-notes'>link</a>&mdash;<a href='git-github-notes.html'>standalone</a>]</small>
+<small>[<a href='../2019.html#git-github-notes'>roll</a>&mdash;<a href='../blogindex.html'>index</a>]</small>
 <p>discard all local changes, sync with repo</p>
 
 <pre><code>
@@ -33,16 +33,16 @@ git pull upstream master
 
 # list repo remote settings
 git remote -v
-origin https://github.com/nsklaus/Cataclysm-DDA.git (fetch)
-origin https://github.com/nsklaus/Cataclysm-DDA.git (push)
-upstream https://github.com/CleverRaven/Cataclysm-DDA.git (fetch)
-upstream https://github.com/CleverRaven/Cataclysm-DDA.git (push)
+origin https://github.com/nsklaus/repo_name.git (fetch)
+origin https://github.com/nsklaus/repo_name.git (push)
+upstream https://github.com/dev_name/repo_name.git (fetch)
+upstream https://github.com/dev_name/repo_name.git (push)
 
 # push your changes as usual
 git push origin master
 </code></pre>
 
-<p>messed up everything? revert to a last know revision:
+<p>messed up everything? revert to a last known revision:
 (git-checkout-a-commit-and-attach-to-existing-branch)</p>
 
 <pre><code>
@@ -74,7 +74,7 @@ git rev-list --objects --all \
 | $(command -v gnumfmt || echo numfmt) --field=2 --to=iec-i --suffix=B --padding=7 --round=nearest
 </code></pre>
 
-<p>now clean it. on my repo dotfiles i made a mistake and it was 500mb, after the command below it was around 500kb.</p>
+<p>now here's to clean it and remove the abnormal fat. on my repo dotfiles i made a mistake and added wrong files, the repo dir was getting around 500mb, after the command below it was back to a more reasonable 500kb.</p>
 
 <pre><code>
 git gc --prune=now --aggressive

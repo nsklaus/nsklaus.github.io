@@ -12,6 +12,32 @@
 <!-- LB -->
 
 <item>
+<title>macbook power key problem</title>
+<guid>nosite.yet/2019.html#macbook-power-key-problem</guid>
+<pubDate>Sat, 17 Aug 2019 18:31:24 +0200</pubDate>
+<description><![CDATA[
+<p>prevent immediate system shutdown on accidental power key press. with macbook keyboards, the power key just above the backspace one, it happen from time to time i press it by mistake and the system goes in immediate shutdown with no warnings. this is quite annoying when it happens. the workaround is to change this behavior by editing logind.conf
+</p>
+<p>edit logind.conf, uncomment 'handlepowerkey' line and change it like so:</p>
+<pre><code>
+vim /etc/systemd/logind.conf
+
+#HandlePowerKey=poweroff
+HandlePowerKey=ignore
+</code></pre>
+
+source: <a href=https://www.reddit.com/r/i3wm/comments/axnq3g/how_can_i_disable_the_power_button_on_my_keyboard/>r/i3wm</a>
+]]></description>
+</item>
+
+
+
+
+
+
+
+
+<item>
 <title>make grub font bigger</title>
 <guid>nosite.yet/2019.html#make-grub-font-bigger</guid>
 <pubDate>Fri, 16 Aug 2019 05:36:18 +0200</pubDate>
